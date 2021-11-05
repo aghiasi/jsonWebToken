@@ -1,8 +1,42 @@
 <%- include('partials/header'); -%>
 
 
-<h1>sign up</h1>
-
-
+<form>
+ <h2>sign up</h2>
+ <label for="email">Email</label>
+ <input type="text" name='email' required >
+ <div class="email error emailerror"></div>
+ <label for="email">password</label>
+ <input type="password" name='password' required >
+ <div class="password error passworderror"></div>
+ <button>Sign up</button>
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+<script>
+ const form = document.querySelector('form');
+const emailError =document.querySelector('.emailerror');
+const passwordError =document.querySelector('.passworderror');
+ form.addEventListener('submit',(e) => {
+   e.preventDefault();
+   //empty form errors 
+   emailError.textContent='';
+   passwordError.textContent='';
+   //get form info
+   const email= form.email.value;
+   const password= form.password.value;
+   //post request
+    axios.post('/singup',{email,password}).then((res) => {
+      if(res.data.user){
+       location.assign('/');
+      }
+    }).catch((error) => {
+      const errorData =error.response.data.errors
+      if(error){
+       emailError.textContent=errorData.email
+       passwordError.textContent=errorData.password
+      }
+    })
+ })
+</script>
 
 <%- include('partials/footer'); -%>
