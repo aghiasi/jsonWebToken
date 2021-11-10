@@ -2,7 +2,6 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 //error handler
 const handleError =(err) => {
-  console.log(err.message,err.code)
   let errors = {email:'',password:''};
   // incoreect email 
   if(err.message.includes('incorrect email')){
@@ -47,7 +46,6 @@ module.exports.login_get =(req,res) => {
 module.exports.singup_post = async (req,res) => {
   const {email, password} = req.body;
   try{
-
    const user=await User.create({email, password});
    const token =createToken(user._id);
    res.cookie('jwt',token,{httpOnly:true,maxAge:maxAge*1000})
